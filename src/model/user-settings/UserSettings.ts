@@ -72,6 +72,7 @@ export interface IUserSettings {
   //Advanced settings
   // publisherDefaults: boolean;
   textAlignment: number;
+  textAlignmentValue?: string; // "auto" | "justify" | "start"
   columnCount: number;
   direction: number;
   wordSpacing: number;
@@ -143,6 +144,7 @@ export class UserSettings implements IUserSettings {
   //Advanced settings
   // publisherDefaults = true;
   textAlignment = 0;
+  textAlignmentValue = "auto";
   columnCount = 0;
   direction = 0;
   wordSpacing = 0.0;
@@ -1121,7 +1123,18 @@ export class UserSettings implements IUserSettings {
 
     if (userSettings.textAlignment) {
       this.textAlignment = UserSettings.textAlignmentValues.findIndex(
-        (el: any) => el === userSettings.textAlignment
+        (_: any, index: number) => index === userSettings.textAlignment
+      );
+      let prop = this.userProperties?.getByRef(ReadiumCSS.TEXT_ALIGNMENT_REF);
+      if (prop) {
+        prop.value = this.textAlignment;
+        await this.storeProperty(prop);
+      }
+    }
+
+    if (userSettings.textAlignmentValue) {
+      this.textAlignment = UserSettings.textAlignmentValues.findIndex(
+        (el: string) => el === userSettings.textAlignmentValue
       );
       let prop = this.userProperties?.getByRef(ReadiumCSS.TEXT_ALIGNMENT_REF);
       if (prop) {
