@@ -1080,7 +1080,7 @@ export class UserSettings implements IUserSettings {
       }
     }
 
-    if (userSettings.letterSpacing) {
+    if (userSettings.letterSpacing !== undefined) {
       this.letterSpacing = userSettings.letterSpacing;
       let prop = this.userProperties?.getByRef(ReadiumCSS.LETTER_SPACING_REF);
       if (prop) {
